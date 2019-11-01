@@ -51,7 +51,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         None => Box::new(std::io::stdout()) as Box<dyn Write>,
     });
 
-    let authenticator = move || Ok(format!("JWT {}", get_jwt(&username, &password)?));
+    let authenticator = move || Ok(format!("JWT {}", get_jwt(username.as_str(), password.as_str())?));
 
     let users = get_all_users(batch_size, &authenticator);
 
@@ -62,7 +62,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .collect();
 
     output.write_all(serde_json::to_string_pretty(&mapping)?.as_bytes())?;
-    output.write(b"\n")?;
+    output.write_all(b"\n")?;
 
     Ok(())
 }

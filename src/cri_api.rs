@@ -10,8 +10,8 @@ type Result<T> = std::result::Result<T, Box<dyn error::Error>>;
 
 pub type Authenticator = dyn Fn() -> Result<String>;
 
-pub fn get_jwt(username: &String, password: &String) -> Result<String> {
-    let payload: HashMap<&str, &String> = hashmap!(
+pub fn get_jwt(username: &str, password: &str) -> Result<String> {
+    let payload: HashMap<&str, &str> = hashmap!(
         "username" => username,
         "password" => password,
     );
@@ -36,7 +36,7 @@ fn get_users(limit: u32, offset: u32, authenticator: &Authenticator) -> Result<U
         .send()?
         .json()?;
 
-    return Ok(result.unwrap());
+    Ok(result.unwrap())
 }
 
 pub fn get_all_users(batch_size: u32, authenticator: &Authenticator) -> Result<Vec<User>> {
@@ -57,5 +57,5 @@ pub fn get_all_users(batch_size: u32, authenticator: &Authenticator) -> Result<V
         }
     }
 
-    return Ok(users);
+    Ok(users)
 }
